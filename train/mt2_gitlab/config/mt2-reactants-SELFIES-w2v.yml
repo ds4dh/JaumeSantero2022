@@ -1,0 +1,77 @@
+# Preprocess reactions for Molecular Transformer
+# Save files path
+save_data: ../data/MIT_reactants_pred_w2v_SELFIES/MIT_reactants_pred_SELFIES_w2v.train.src
+
+# Save vocabulary
+src_vocab: ../data/MIT_reactants_pred_w2v_SELFIES/MIT_reactants_pred_SELFIES_w2v.vocab
+share_vocab: 'true'
+
+# Prevent overwriting of existing files
+overwrite: True
+
+# Corpus opts
+data:
+  corpus_1:
+    path_src: ../data/MIT_reactants_pred_w2v_SELFIES/src-train.txt
+    path_tgt: ../data/MIT_reactants_pred_w2v_SELFIES/tgt-train.txt
+  valid:
+    path_src: ../data/MIT_reactants_pred_w2v_SELFIES/src-val.txt
+    path_tgt: ../data/MIT_reactants_pred_w2v_SELFIES/tgt-val.txt
+
+# Add pre-trained embeddings
+both_embeddings: ../data/MIT_reactants_pred_w2v_SELFIES/reactant-embeddings-SELFIES.txt
+embeddings_type: "word2vec"
+word_vec_size: 200
+
+# Place to save the checkpoints
+save_model: ../available_models/MIT_reactants_pred_w2v_SELFIES/MIT_reactants_pred_w2v_SELFIES.model
+save_checkpoint_steps: 10000
+keep_checkpoint: 20
+seed: 42
+
+# Training steps
+train_steps: 500000
+valid_steps: 10000
+warmup_steps: 8000
+report_every: 100
+
+# Transformer archutecture
+decoder_type: transformer
+encoder_type: transformer
+word_vec_size: 256
+rnn_size: 256
+layers: 4
+transformer_ff: 2048
+heads: 8
+global_attention: general
+global_attention_function: softmax
+self_attn_type: scaled-dot
+
+# Solver options
+accum_count: 4
+optim: adam
+adam_beta1: 0.9
+adam_beta2: 0.998
+decay_method: noam
+learning_rate: 2.0
+max_grad_norm: 0.0
+
+# Batch options 
+batch_size: 4096
+batch_type: tokens
+normalization: tokens
+dropout: 0.1
+label_smoothing: 0.0
+max_generator_batches: 32
+param_init: 0.0
+param_init_glorot: 'true'
+position_encoding: 'true'
+share_embeddings: 'true'
+
+# Train on 4 GPU
+world_size: 1 
+gpu_ranks:
+- 0
+- 1
+- 2
+- 3
